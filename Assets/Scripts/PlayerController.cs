@@ -23,12 +23,20 @@ public class PlayerController : MonoBehaviour
   {
     if (Input.GetMouseButtonDown(0) && rigid2D.velocity.y == 0)
     {
+      animator.SetTrigger("JumpTrigger");
       rigid2D.AddForce(transform.up * jumpForce);
     }
 
     float key = 0;
-    if (Input.acceleration.x > this.threshold) key = 1;
-    if (Input.acceleration.x < this.threshold) key = -1;
+    if (Application.isEditor)
+    {
+      key = Input.GetAxisRaw("Horizontal");
+    }
+    else
+    {
+      if (Input.acceleration.x > threshold + 0.05f) key = 1;
+      if (Input.acceleration.x < threshold - 0.05f) key = -1;
+    }
 
     float speedx = Mathf.Abs(rigid2D.velocity.x);
 
@@ -39,7 +47,14 @@ public class PlayerController : MonoBehaviour
 
     if (key != 0) transform.localScale = new Vector3(key, 1, 1);
 
-    animator.speed = speedx / 2.0f;
+    if (rigid2D.velocity.y == 0)
+    {
+      animator.speed = speedx / 2.0f;
+    }
+    else
+    {
+      animator.speed = 1.0f;
+    }
 
     if (transform.position.y < -10)
     {
