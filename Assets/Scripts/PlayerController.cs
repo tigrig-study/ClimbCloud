@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
   private Rigidbody2D rigid2D;
+  private Animator animator;
   [SerializeField] private float jumpForce = 680.0f;
   [SerializeField] private float walkForce = 30.0f;
   [SerializeField] private float maxWalkSpeed = 2.0f;
@@ -12,6 +13,7 @@ public class PlayerController : MonoBehaviour
   private void Start()
   {
     rigid2D = GetComponent<Rigidbody2D>();
+    animator = GetComponent<Animator>();
   }
 
   private void Update()
@@ -32,5 +34,6 @@ public class PlayerController : MonoBehaviour
 
     if (key != 0) transform.localScale = new Vector3(key, 1, 1);
 
+    animator.speed = speedx / 2.0f;
   }
 }
