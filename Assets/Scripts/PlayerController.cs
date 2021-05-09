@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
   [SerializeField] private float walkForce = 30.0f;
   [SerializeField] private float maxWalkSpeed = 2.0f;
 
+  float threshold = 0.2f;
+
   private void Start()
   {
     rigid2D = GetComponent<Rigidbody2D>();
@@ -19,12 +21,14 @@ public class PlayerController : MonoBehaviour
 
   private void Update()
   {
-    if (Input.GetKeyDown(KeyCode.Space) && rigid2D.velocity.y == 0)
+    if (Input.GetMouseButtonDown(0) && rigid2D.velocity.y == 0)
     {
       rigid2D.AddForce(transform.up * jumpForce);
     }
 
-    float key = Input.GetAxisRaw("Horizontal");
+    float key = 0;
+    if (Input.acceleration.x > this.threshold) key = 1;
+    if (Input.acceleration.x < this.threshold) key = -1;
 
     float speedx = Mathf.Abs(rigid2D.velocity.x);
 
